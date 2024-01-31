@@ -1,6 +1,6 @@
 // 判断Promise的返回值类型
 const resolvePromise = (promise, value, resolve, reject) => {
-  // 回调返回自身，属于自己等待自己完成，会导致无限循环，直接抛错！
+  // 回调返回自身，属于自己等待自己完成，会导致无限循环，直接抛错！--- 对应Promise的特性之一，回调不能返回自身，否则会导致死循环
   if (promise === value) {
     return reject(
       new TypeError("Chaining cycle detected for promise #<Promise>")
@@ -42,7 +42,7 @@ const resolvePromise = (promise, value, resolve, reject) => {
     }
   } else {
     // 既不是对象也不是函数类型，说明是普通值，直接resolve出去即可
-    resolve(x);
+    resolve(value);
   }
 };
 
