@@ -1,3 +1,51 @@
+// 判断Promise的返回值类型
+const resolvePromise = (promise, value, resolve, reject) => {
+  // 回调返回自身，属于自己等待自己完成，会导致无限循环，直接抛错！
+  if (promise === value) {
+    return reject(
+      new TypeError("Chaining cycle detected for promise #<Promise>")
+    );
+  }
+  // 判断返回值的类型，这里要进行严格的类型判断，保证代码能和别的库一起使用
+  if (
+    (typeof value === "object" && value !== null) ||
+    typeof value === "function"
+  ) {
+    let called = false; // 标识，用于控制仅执行一次
+    // 这里用 try/catch 包裹，防止下面调用then方法时出错，如果出错，直接reject触发失败回调
+    try {
+      // 检查返回值的then属性
+      const then = value.then;
+      if (typeof then === "function") {
+        // 若返回值的then属性为函数，说明其为Promise对象！
+        // 如果是Promise对象，调用其then方法，当其状态变化时，执行resolve或reject方法，更新新Promise对象的状态，并将结果传递出去
+        then.call(
+          value,
+          (v) => {
+            if (called) return;
+            called = true;
+            // 递归解析的过程（因为可能 promise 中还有 promise）
+            resolvePromise(promise, v, resolve, reject);
+          },
+          (e) => {
+            reject(e);
+          }
+        );
+      } else {
+        // 只是身上有then属性的普通对象，直接resolve即可
+        if (called) return;
+        called = true;
+        resolve(value);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  } else {
+    // 既不是对象也不是函数类型，说明是普通值，直接resolve出去即可
+    resolve(x);
+  }
+};
+
 class _Promise {
   // Promise状态枚举
   static PENDING = "pending";
@@ -110,51 +158,3 @@ class _Promise {
     return promise;
   };
 }
-
-// 判断Promise的返回值类型
-const resolvePromise = (promise, value, resolve, reject) => {
-  // 回调返回自身，属于自己等待自己完成，会导致无限循环，直接抛错！
-  if (promise === value) {
-    return reject(
-      new TypeError("Chaining cycle detected for promise #<Promise>")
-    );
-  }
-  // 判断返回值的类型，这里要进行严格的类型判断，保证代码能和别的库一起使用
-  if (
-    (typeof value === "object" && value !== null) ||
-    typeof value === "function"
-  ) {
-    let called = false; // 标识，用于控制仅执行一次
-    // 这里用 try/catch 包裹，防止下面调用then方法时出错，如果出错，直接reject触发失败回调
-    try {
-      // 检查返回值的then属性
-      const then = value.then;
-      if (typeof then === "function") {
-        // 若返回值的then属性为函数，说明其为Promise对象！
-        // 如果是Promise对象，调用其then方法，当其状态变化时，执行resolve或reject方法，更新新Promise对象的状态，并将结果传递出去
-        then.call(
-          value,
-          (v) => {
-            if (called) return;
-            called = true;
-            // 递归解析的过程（因为可能 promise 中还有 promise）
-            resolvePromise(promise, v, resolve, reject);
-          },
-          (e) => {
-            reject(e);
-          }
-        );
-      } else {
-        // 只是身上有then属性的普通对象，直接resolve即可
-        if (called) return;
-        called = true;
-        resolve(value);
-      }
-    } catch (error) {
-      reject(error);
-    }
-  } else {
-    // 既不是对象也不是函数类型，说明是普通值，直接resolve出去即可
-    resolve(x);
-  }
-};
