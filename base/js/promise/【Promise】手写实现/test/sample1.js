@@ -1,4 +1,4 @@
-// 例：未实现状态改变时执行回调的例子
+// 例1：未实现状态改变时执行回调的例子
 
 class _Promise {
   // Promise 等待态（初始状态）
@@ -45,6 +45,23 @@ class _Promise {
     }
   }
 }
+
+// 先看原生Promise
+const p = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("ok");
+  }, 2000);
+});
+p.then(
+  (value) => {
+    console.log("promise success:", value);
+  },
+  (reason) => {
+    console.log("promise fail:", reason);
+  }
+);
+
+// 再看我们实现的_Promise
 
 const promise = new _Promise((resolve, reject) => {
   setTimeout(() => {

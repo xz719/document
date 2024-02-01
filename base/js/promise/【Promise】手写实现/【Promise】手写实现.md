@@ -189,7 +189,7 @@ _promise.then((value) => {
 })
 ```
 
-对于原生的 Promise，其肯定会在2秒后打印 success：ok
+对于原生的 Promise，其肯定会在2秒后打印 success：ok（见[例1](./test/sample1.js)）
 
 但对于我们实现的 _Promise，它是没有任何输出的！为什么？因为 setTimeout 是一个异步任务，当执行到这里时，发现其是异步任务，就会将其放入微任务队列中，暂时不做处理。
 
@@ -222,7 +222,7 @@ onRejectedCallbacks = [];
 // then方法
 then = (onResolved = (value) => value, onRejected) => {
     if (this.status === _Promise.PENDING) {
-        // 状态为pending时，将回调存放起来
+        // ✨状态为pending时，将回调存放起来
         this.onFulfilledCallbacks.push(() => {
             // 传递操作成功时的结果
             onResolved(this.value)
@@ -304,7 +304,7 @@ promise.then((value) => {
 })
 ```
 
-这次，两秒之后就会输出 `promise success: ok`
+这次，两秒之后就会输出 `promise success: ok`（见[例2](./test/sample2.js)）
 
 ## 6. 实现可链式调用的`then`方法
 
@@ -378,7 +378,7 @@ p2.then(
 `
 p1 success: ok
 p2 success: 123
-`
+`（见[例3](./test/sample3.js)）
 
 但注意，在 p2 的 then 方法中，我们是可以拿到 p1 的 onResolved 回调中返回的值 123 的！而我们的 then 方法中，是没有任何返回的，所以我们需要补全这部分功能：
 
@@ -410,7 +410,7 @@ then = (onResolved = (value) => value, onRejected) => {
 };
 ```
 
-测试一下，输出结果为：`p1 success: ok p2 success: 123`
+测试一下，输出结果为：`p1 success: ok p2 success: 123`（见[例3](./test/sample3.js)）
 
 到这里，我们就能够构建一个简单的链式调用了。
 
@@ -420,6 +420,7 @@ then = (onResolved = (value) => value, onRejected) => {
 
 * 返回普通值
 * 回调失败
+* 返回一个函数或对象
 * 返回一个新的 Promise
 
 #### 6.2.1 回调失败的处理
@@ -512,6 +513,8 @@ p2.then((value)=>{
 // p2 fail: Error: error
 ```
 
+（见[例4](./test/sample4.js)）
+
 可以看到，p2 执行了失败回调，即，某一 Promise 的回调执行失败，会导致调用链上的下一个 Promise 状态转为 rejected。仔细想也是合理的，我们可以这样理解，回调执行失败，说明该 Promise 的执行流程没有完成，而我们在此基础上调用 then 方法，相当于**将这个 Promise 的执行流程视为了一个新的 Promise**，既然执行流程未完成，也就意味着这个新的 Promise 并未兑现，也就是 rejected！
 
 接下来就是实现了，首先我们不考虑其它情况，在前面的例子中我们可以看到，无论调用链上的前一个 Promise 是 fulfilled 还是 rejected，其下一个 Promise 都只会执行成功的回调，那么我们的实现如下：
@@ -598,7 +601,7 @@ then = (onResolved = (value) => value, onRejected) => {
 
 #### 6.2.2 回调返回 Promise 的处理
 
-仍然是先看原生 Promise 的处理：
+在上面的例子中：
 
 ```js
 const p1 = new Promise((resolve, reject) => {
@@ -857,7 +860,7 @@ const p2 = p1.then(
   (value) => {
     console.log("p1 success:", value);
     return new _Promise((resolve, reject) => {
-      resolve(new Promise((resolve, reject) => {
+      resolve(new _Promise((resolve, reject) => {
         resolve('ok2')
       }));
     });
@@ -867,6 +870,52 @@ const p2 = p1.then(
   }
 );
 ```
+
+看看原生Promise对嵌套的处理：
+
+```js
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("ok");
+  }, 2000);
+});
+
+const p2 = p1.then(
+  (value) => {
+    console.log("p1 success:", value);
+    return new Promise((resolve, reject) => {
+      // reject(
+      resolve(
+        new Promise((resolve, reject) => {
+          // resolve("ok2");
+          reject("ok2")
+        })
+      );
+    });
+  },
+  (reason) => {
+    console.log("p1 fail:", reason);
+  }
+);
+
+p2.then(
+  (value) => {
+    console.log("p2 success:", value);
+  },
+  (reason) => {
+    console.log("p2 fail:", reason);
+  }
+);
+
+// 输出为
+// p1 success: ok
+// p2 success: ok2 或 p2 fail: ok2 取决于嵌套的Promise是resolve还是reject
+// 但如果我们在第一层就使用reject，不论下一层是resolve还是reject，输出都是
+// p1 success: ok
+// p2 fail: ok2
+```
+
+即当返回嵌套的 Promise 时，只有当其中每一层状态都为 fulfilled 时，才会触发成功回调，但凡有一层状态为 rejected，不论下层 Promise 状态如何，均会触发失败回调！（见[例5](./test/sample5.js)）
 
 所以，我们还需要递归解析！只需要在调用返回 Promise 对象的 then 方法时，在成功回调中递归调用本方法即可：
 
@@ -911,11 +960,11 @@ const promise = new _Promise((resolve, reject) => {
 const promise2 = promise.then((value) => {
     console.log("promise1 success:", value);
     return {
-        // 这里返回一个then属性为函数的对象，仅仅是为了测试，绝大部分场景下不会出现这种情况
-        then(onFulfilled,onRejected){
-            // 首先调用成功回调，然后再抛错，触发我们 resolvePromise 中的 try/catch
-            throw new Error(onFulfilled('ok'))
-        }
+      // 这里返回一个then属性为函数的对象，仅仅是为了测试，绝大部分场景下不会出现这种情况
+      then(onFulfilled,onRejected){
+          // 首先调用成功回调，然后再抛错，触发我们 resolvePromise 中的 try/catch
+          throw new Error(onFulfilled('ok'))
+      }
     }
 }, (reason) => {
     console.log("promise1 fail:", reason);

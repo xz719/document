@@ -1,31 +1,4 @@
-// 例：对回调返回 Promise 的处理
-// const p1 = new Promise((resolve, reject) => {
-//   setTimeout(() => {
-//     resolve("ok");
-//   }, 2000);
-// });
-
-// const p2 = p1.then(
-//   (value) => {
-//     console.log("p1 success:", value);
-//     return new Promise((resolve, reject) => {
-//       // resolve("ok2");
-//       reject("ok2");
-//     });
-//   },
-//   (reason) => {
-//     console.log("p1 fail:", reason);
-//   }
-// );
-
-// p2.then(
-//   (value) => {
-//     console.log("p2 success:", value);
-//   },
-//   (reason) => {
-//     console.log("p2 fail:", reason);
-//   }
-// );
+// 例4：对回调返回 Promise 的处理
 
 class _Promise {
   // Promise状态枚举
@@ -181,6 +154,37 @@ const resolvePromise = (promise, value, resolve, reject) => {
     resolve(x);
   }
 };
+
+// 原生Promise的处理
+// const p1 = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     resolve("ok");
+//   }, 2000);
+// });
+
+// const p2 = p1.then(
+//   (value) => {
+//     console.log("p1 success:", value);
+//     return new Promise((resolve, reject) => {
+//       // resolve("ok2");
+//       reject("ok2");
+//     });
+//   },
+//   (reason) => {
+//     console.log("p1 fail:", reason);
+//   }
+// );
+
+// p2.then(
+//   (value) => {
+//     console.log("p2 success:", value);
+//   },
+//   (reason) => {
+//     console.log("p2 fail:", reason);
+//   }
+// );
+
+// 我们实现的_Promise
 
 const p1 = new _Promise((resolve, reject) => {
   setTimeout(() => {
