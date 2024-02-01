@@ -59,7 +59,9 @@ JS是一门单线程的语言。在设计初期，由于JS是运行在浏览器�
 异步任务又可以分为**宏任务**和**微任务**。
 
 如下表：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/fdc70db3daac4b5fa58a58684353c34e.png#pic_center)
+
+[![pFMBHSS.png](https://s11.ax1x.com/2024/02/01/pFMBHSS.png)](https://imgse.com/i/pFMBHSS)
+
 同时，需要注意的是：
 
 这里的 Promise 是指 Promise 的`then`、`catch`方法，而**创建 Promise(`new Promise()`中的内容)，`console.log()`均为同步任务。**

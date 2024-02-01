@@ -962,8 +962,8 @@ const promise2 = promise.then((value) => {
     return {
       // 这里返回一个then属性为函数的对象，仅仅是为了测试，绝大部分场景下不会出现这种情况
       then(onFulfilled,onRejected){
-          // 首先调用成功回调，然后再抛错，触发我们 resolvePromise 中的 try/catch
-          throw new Error(onFulfilled('ok'))
+        // 首先调用成功回调，然后再抛错，触发我们 resolvePromise 中的 try/catch
+        throw new Error(onFulfilled('ok'))
       }
     }
 }, (reason) => {
