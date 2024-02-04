@@ -10,7 +10,7 @@ class _Promise {
 
   constructor(executor) {
     // 初始化 Promise 初始状态
-    this.status = Promise.PENDING;
+    this.status = _Promise.PENDING;
     // 定义 Promise 成功的值
     this.value = undefined;
     // 定义 Promise 失败的原因
@@ -47,19 +47,19 @@ class _Promise {
 }
 
 // 先看原生Promise
-const p = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve("ok");
-  }, 2000);
-});
-p.then(
-  (value) => {
-    console.log("promise success:", value);
-  },
-  (reason) => {
-    console.log("promise fail:", reason);
-  }
-);
+// const p = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     resolve("ok");
+//   }, 2000);
+// });
+// p.then(
+//   (value) => {
+//     console.log("promise success:", value);
+//   },
+//   (reason) => {
+//     console.log("promise fail:", reason);
+//   }
+// );
 
 // 再看我们实现的_Promise
 
@@ -79,4 +79,4 @@ promise.then(
 
 setTimeout(() => {
   console.log(promise);
-}, 2000);
+}, 2400);

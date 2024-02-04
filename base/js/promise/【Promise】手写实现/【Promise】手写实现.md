@@ -385,28 +385,29 @@ p2 success: 123
 ```js
 // then方法
 then = (onResolved = (value) => value, onRejected) => {
-    return new _Promise((resolve, reject) => {
-        // 状态为pending时，将回调存放起来
-        if (this.status === _Promise.PENDING) {
-            this.onFulfilledCallbacks.push(() => {
-                // 传递操作成功时的结果
-                onResolved(this.value);
-            });
-            this.onRejectedCallbacks.push(() => {
-                // 传递操作失败时的原有
-                onRejected(this.reason);
-            });
-        }
-        // 状态为fulfilled或rejected时，直接执行回调
-        if (this.status === _Promise.FULFILLED) {
-            // ✨直接执行回调时，需要将回调的返回值resolve出去，供后续链式调用时获取
-            const res = onResolved(this.value);
-            resolve(res)
-        }
-        if (this.status === _Promise.REJECTED) {
-            onRejected(this.reason);
-        }
-    });
+  return new _Promise((resolve, reject) => {
+    // 状态为pending时，将回调存放起来
+    if (this.status === _Promise.PENDING) {
+      this.onFulfilledCallbacks.push(() => {
+        // 传递操作成功时的结果
+        const res = onResolved(this.value);
+        resolve(res);
+      });
+      this.onRejectedCallbacks.push(() => {
+        // 传递操作失败时的原有
+        onRejected(this.reason);
+      });
+    }
+    // 状态为fulfilled或rejected时，直接执行回调
+    if (this.status === _Promise.FULFILLED) {
+      // ✨直接执行回调时，需要将回调的返回值resolve出去，供后续链式调用时获取
+      const res = onResolved(this.value);
+      resolve(res)
+    }
+    if (this.status === _Promise.REJECTED) {
+      onRejected(this.reason);
+    }
+  });
 };
 ```
 
