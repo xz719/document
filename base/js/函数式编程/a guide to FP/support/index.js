@@ -836,6 +836,15 @@ const take = curry(function take(n, xs) {
   return xs.slice(0, n);
 });
 
+const replace = curry(function replace(s, r, t) {
+  // assert(
+  //   typeof s === 'string',
+  //   typeMismatch('String -> String', [getType(s), '?'].join(' -> '), 'replace'),
+  // );
+
+  return t.replace(s, r)
+})
+
 const toLowerCase = function toLowerCase(s) {
   assert(
     typeof s === 'string',
@@ -848,7 +857,7 @@ const toLowerCase = function toLowerCase(s) {
 const toUpperCase = function toUpperCase(s) {
   assert(
     typeof s === 'string',
-    typeMismatch('String -> String', [getType(s), '?'].join(' -> '), 'toLowerCase'),
+    typeMismatch('String -> String', [getType(s), '?'].join(' -> '), 'toUpperCase'),
   );
 
   return s.toUpperCase();
@@ -1087,6 +1096,7 @@ if (typeof module === 'object') {
     sortBy,
     split,
     take,
+    replace,
     toLowerCase,
     toUpperCase,
     traverse,
