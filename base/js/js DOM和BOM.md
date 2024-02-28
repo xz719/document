@@ -70,7 +70,7 @@ removeEventListener(eventType, handler, useCapture)
 
 * 【eventType】 — 事件类型
 * 【handler】 — 事件处理函数
-* 【useCapture】 — `boolean` 类型，用于指定是否在**捕获阶段**进行处理，一般设置为 `false` 与 IE 浏览器保持一致，即只在**事件冒泡阶段**才执行事件处理函数！设置为 `true` 就在**捕获过程**中执行，反之在**冒泡过程**中执行处理函数
+* 【useCapture】 — `boolean` 类型，用于指定是否在**捕获阶段**进行处理，一般设置为 `false` 与 IE 浏览器保持一致，即只在**事件冒泡阶段**才执行事件处理函数！设置为 `true` 就在**捕获过程**中执行。
 
 ### 3.5 事件对象
 
