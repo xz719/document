@@ -20,7 +20,7 @@
 
 比如，在这个例子中，执行下面的指令：
 
-```
+```cmd
 git checkout experiment
 git rebase master
 ```

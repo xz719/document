@@ -1,5 +1,7 @@
 # HTML meta 标签中的 viewport
 
+`viewport` 属性用于调整视口的大小以及比例，一般用于适配移动端
+
 ```html
 <meta
   name="viewport"
