@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>异常捕获</title>
+  </head>
+  <body>
+    <img src="./xxxxxx.jpg" />
+    <script>
+      // 尝试在异步方法中使用
+      function fn() {
+        console.log("fn->start");
+        error;
+        console.log("fn->end");
+      }
+
+      //   setTimeout(() => {
+      //     try {
+      //       fn();
+      //     } catch (error) {
+      //       console.log("catch", error);
+      //     }
+      //   });
+
+      // 在 try-catch-finally 中调用异步方法
+      //   async function asyncFn() {
+      //     await fn();
+      //   }
+
+      //   try {
+      //     // setTimeout(() => {
+      //     //   fn();
+      //     // });
+      //     asyncFn()
+      //   } catch (error) {
+      //     console.log("catch", error);
+      //   }
+
+      //   window.onerror = (...args) => {
+      //     console.log("onerror", args);
+      //   };
+
+      //   setTimeout(() => {
+      //     fn()
+      //   })
+
+      // 捕获网络请求错误
+      //   window.addEventListener(
+      //     "error",
+      //     (args) => {
+      //       console.log("error event", args);
+      //       return true; // 返回 true 是为了阻止默认执行默认事件处理函数
+      //     },
+      //     true,   // 这里设置为 true，是为了在事件的捕获阶段进行处理，而不是在事件冒泡阶段处理！
+      //   );
+
+      //   new Promise((resolve, reject) => {
+      //     error;
+      //   }).catch((err) => {
+      //     console.log("promise catch", err);
+      //   });
+
+      //   const asyncFunc = () =>
+      //     new Promise((resolve) => {
+      //       error;
+      //     });
+      //   setTimeout(async () => {
+      //     try {
+      //       await asyncFunc();
+      //     } catch (error) {
+      //       console.log("catch", error);
+      //     }
+      //   });
+
+      //   new Promise((resolve, reject) => {
+      //     error;
+      //   });
+
+      //   window.addEventListener("unhandledrejection", e => {
+      //     console.log("unhandledrejection", e)
+      //   })
+
+      /**
+       * 最佳实践---------------------
+       */
+      window.addEventListener(
+        "error",
+        (args) => {
+          console.log("error event", args);
+          // 在这里进行你自己的错误处理！
+          // ...
+          return true; // 返回 true 是为了阻止默认执行默认事件处理函数
+        },
+        true // 这里设置为 true，是为了在事件的捕获阶段进行处理，而不是在事件冒泡阶段处理！
+      );
+
+      // 捕获 Promise 异常
+      window.addEventListener("unhandledrejection", (err) => {
+        // 将错误原因抛出，交由上面进行处理
+        throw err.reason;
+      });
+    </script>
+  </body>
+</html>
