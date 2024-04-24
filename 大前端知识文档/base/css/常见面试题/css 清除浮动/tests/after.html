@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>overflow 清除浮动</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .box1 {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+        float: left;
+      }
+      .box2 {
+        width: 80px;
+        height: 80px;
+        background-color: skyblue;
+        float: left;
+      }
+      .father {
+        width: 100%;
+        border: 2px solid red;
+      }
+      .father:after {
+        content: "";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+      }
+      .father_IE6 {
+        zoom: 1;
+        /*IE6清除浮动的方式 只有IE6-IE7执行，其他浏览器不执行*/
+      }
+      .bottom {
+        width: 100%;
+        height: 200px;
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="father father_IE6">
+      <div class="box1">1</div>
+      <div class="box2">2</div>
+    </div>
+    <div class="bottom">3</div>
+  </body>
+</html>
