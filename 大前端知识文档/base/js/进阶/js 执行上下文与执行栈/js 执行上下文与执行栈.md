@@ -254,7 +254,7 @@ out();
 
 ### 3.3 确定 this 指向
 
-有关 `this` 的指向问题，见 [js this指向](./js%20this指向.md)
+有关 `this` 的指向问题，见 [js this指向](./js%20this/js%20this指向.md)
 
 ## 4.执行上下文栈
 

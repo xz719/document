@@ -130,7 +130,7 @@ Object.create(null) instanceof Object   // false
 ({}) instanceof (() => {})
 ```
 
-如果想要了解 `instanceof` 的原理，可以移步 [js instanceof](../../js进阶/js%20instanceof.md)
+如果想要了解 `instanceof` 的原理，可以移步 [js instanceof](./js%20instanceof.md)
 
 ## 3. `Object.prototype.toString`
 
