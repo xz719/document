@@ -1,11 +1,5 @@
 # JS 事件模型
 
-<https://baijiahao.baidu.com/s?id=1784680378981458690&wfr=spider&for=pc>
-
-<https://zhuanlan.zhihu.com/p/536139113>
-
-<https://blog.csdn.net/weixin_47450807/article/details/122646045>
-
 JavaScript 中的事件模型是一种用于处理用户交互和其他类型事件的机制。它允许开发人员对特定事件做出响应，并执行相应的代码，实际上，事件模型其实就是**观察者模式**的体现。
 
 ## 1. 了解事件模型
