@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>阻止事件默认行为</title>
+  </head>
+  <body>
+    <a id="myLink">1234</a>
+    <script lang="javascript">
+        // 阻止 a 标签默认行为（打开新页面）
+        document.getElementById('myLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            // 执行其他逻辑，比如在新窗口中打开页面
+            // ...
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件委托</title>
+  </head>
+  <body>
+    <div id="box">
+      <button id="btn1">按钮1</button>
+      <button id="btn2">按钮2</button>
+      <button id="btn3">按钮3</button>
+    </div>
+
+    <script>
+      let box = document.getElementById("box");
+      let btn1 = document.getElementById("btn1");
+      let btn2 = document.getElementById("btn2");
+      let btn3 = document.getElementById("btn3");
+
+      box.addEventListener("click", function (event) {
+        if (event.target.getAttribute("id") === "btn1") {
+          console.log("您点击的是按钮一");
+        } else if (event.target.getAttribute("id") === "btn2") {
+          console.log("您点击的是按钮二");
+        } else {
+          console.log("您点击的是按钮三");
+        }
+      });
+    </script>
+  </body>
+</html>

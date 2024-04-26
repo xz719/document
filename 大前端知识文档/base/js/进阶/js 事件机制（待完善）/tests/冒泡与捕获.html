@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Event Bubbling</title>
+  </head>
+  <body>
+    <button id="clickMe">Click Me</button>
+    <script lang="javascript">
+        const button = document.getElementById('clickMe');
+
+        // 事件冒泡模型
+        // button.addEventListener("click", function() {
+        //     console.log('1.Button');
+        // });
+        // document.body.addEventListener("click", function() {
+        //     console.log('2.body');
+        // });
+        // document.addEventListener("click", function() {
+        //     console.log('3.document');
+        // });
+        // window.addEventListener("click", function() {
+        //     console.log('4.window');
+        // });
+
+        // 事件捕获模型
+        button.addEventListener("click", function() {
+            console.log('1.Button');
+        }, true);
+        document.body.addEventListener("click", function() {
+            console.log('2.body');
+        }, true);
+        document.addEventListener("click", function() {
+            console.log('3.document');
+        }, true);
+        window.addEventListener("click", function() {
+            console.log('4.window');
+        }, true);
+    </script>
+  </body>
+</html>
