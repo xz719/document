@@ -192,7 +192,7 @@ console.log(obj);
 
 打印结果如下：
 
-![3](C:\Users\pc\Desktop\Vue 数据双向绑定\数据劫持\3.png)
+![3](./3.png)
 
 可以看到对象身上拥有一对 getter 和 setter，此时我们对 obj 的 test 属性进行读写的时候，就会通过 getter 和 setter 来实现了！
 
