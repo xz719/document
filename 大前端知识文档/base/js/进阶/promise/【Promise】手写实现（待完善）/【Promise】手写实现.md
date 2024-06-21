@@ -528,11 +528,13 @@ then = (onResolved = (value) => value, onRejected) => {
         if (this.status === _Promise.PENDING) {
             this.onFulfilledCallbacks.push(() => {
                 // 传递操作成功时的结果
-                onResolved(this.value);
+                const res = onResolved(this.value);
+                resolve(res)
             });
             this.onRejectedCallbacks.push(() => {
                 // 传递操作失败时的原有
-                onRejected(this.reason);
+                const res = onRejected(this.reason);
+                resolve(res)
             });
         }
         // 状态为fulfilled或rejected时，直接执行回调

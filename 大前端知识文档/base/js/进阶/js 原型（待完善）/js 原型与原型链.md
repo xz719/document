@@ -20,6 +20,7 @@ myObject.greet(); // 来自 bj 的问候
 
 当在控制台中输入 `myObject.` 时，可以看到该对象下可用的一系列属性：
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/ffc02133d53749c49a2dc32dbcd3033a.png#pic_center)
+
 但这些方法中，很多都不是我们定义的，现在尝试访问其中一个：
 
 ```js
