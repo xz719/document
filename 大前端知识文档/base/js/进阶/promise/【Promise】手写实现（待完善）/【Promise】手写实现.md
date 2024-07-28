@@ -762,11 +762,11 @@ then = (onResolved = (value) => value, onRejected) => {
         // 将同步代码修改为异步执行，使得能够获取到新创建的promise
         setTimeout(() => {
             try {
-            const res = onFulfilled(this.value);
-            // 调用处理函数
-            resolvePromise(promise, res, resolve, reject);
+              const res = onFulfilled(this.value);
+              // 调用处理函数
+              resolvePromise(promise, res, resolve, reject);
             } catch (error) {
-            reject(error);
+              reject(error);
             }
         }, 0);
         }
@@ -774,11 +774,11 @@ then = (onResolved = (value) => value, onRejected) => {
         // 将同步代码修改为异步执行，使得能够获取到新创建的promise
         setTimeout(() => {
             try {
-            const res = onRejected(this.reason);
-            // 调用处理函数
-            resolvePromise(promise, res, resolve, reject);
+              const res = onRejected(this.reason);
+              // 调用处理函数
+              resolvePromise(promise, res, resolve, reject);
             } catch (error) {
-            reject(error);
+              reject(error);
             }
         }, 0);
         }
