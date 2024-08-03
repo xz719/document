@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const vnode = {
+            tag: 'div',
+            props: {
+                onclick: () => alert('hello'),
+            },
+            children: 'click me'
+        }
+
+        // render
+        function render(vnode, container) {
+            // 1. 创建 DOM 元素
+            const el = document.createElement(vnode.tag);
+            // 2. 遍历 props 属性，将其添加到元素身上
+            for (const key in object) {
+                // 如果以 on 开头，则是事件
+                if (/^on/.test(key)) {
+                    el.addEventListener(
+                        key.substr(2).toLowerCase(),    // 事件名称
+                        vnode.props[key],               // 事件处理函数
+                    )
+                }
+                // ...
+            }
+
+            // 处理子结点
+            if (typeof vnode.children === 'string') {
+                const text = document.createTextNode(vnode.children);
+                el.appendChild(text);
+            } else if (vnode.children) {
+                vnode.children.forEach(child => render(child, el));
+            }
+
+            container.appendChild(el);
+        }
+
+        // side effect
+        function effect() {
+            document.body.innerText = 'hello 11';
+        }
+    </script>
+</body>
+</html>
