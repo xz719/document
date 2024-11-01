@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function threeSum(nums) {
+        // 结果数组
+        let res = [];
+
+        // 将 nums 排序，方便双指针的使用
+        nums = nums.sort((a, b) => {
+          return a - b;
+        });
+
+        // 遍历 nums
+        const len = nums.length;
+        for (let i = 0; i < len; i++) {
+          // 设置双指针
+          let p1 = i + 1;
+          let p2 = len - 1;
+          // ❗如果遇到重复数字，则跳过（此时重复数字一定相邻，因为进行过排序）
+          if (i > 0 && nums[i] === nums[i - 1]) {
+            continue;
+          }
+          while (p1 < p2) {
+            if (nums[i] + nums[p1] + nums[p2] > 0) {
+              // 大于0，说明偏大，移动右指针
+              p2--;
+              // ❗移动时需要跳过重复元素
+              while (p1 < p2 && nums[p2] === nums[p2 + 1]) {
+                p2--;
+              }
+            } else if (nums[i] + nums[p1] + nums[p2] < 0) {
+              // 小于0，说明偏小，移动左指针
+              p1++;
+              // ❗移动时需要跳过重复元素
+              while (p1 < p2 && nums[p1] === nums[p1 - 1]) {
+                p1++;
+              }
+            } else {
+              // 恰好等于0，则将组合加入结果数组中，然后将左右指针一起移动
+              res.push([nums[i], nums[p1], nums[p2]]);
+              // ❗跳过重复元素
+              while (p1 < p2 && nums[p2] === nums[p2 + 1]) {
+                p2--;
+              }
+              while (p1 < p2 && nums[p1] === nums[p1 - 1]) {
+                p1++;
+              }
+            }
+          }
+        }
+
+        // 返回结果
+        return res;
+      }
+    </script>
+  </body>
+</html>
