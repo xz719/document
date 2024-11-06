@@ -1,35 +1,37 @@
 /**
- * @param {number[]} nums
+ * @param {number} n
  * @param {number} k
- * @return {number[]}
+ * @return {number[][]}
  */
-const maxSlidingWindow = function (nums, k) {
-  // 缓存数组长度 + 初始化结果数组
-  const len = nums.length;
-  let res = [];
+const combine = function(n, k) {
+  // 结果数组
+  const res = [];
 
-  // 初始化双端队列
-  const deque = [];
+  // 当前组合
+  const subset = []
 
-  // 遍历数组
-  for (let i = 0; i < len; i++) {
-    // 将当前元素与队尾元素比较，保证双端队列的递减性
-    while (deque.length && nums[deque[deque.length - 1]] < nums[i]) {
-      deque.pop();
+  // dfs
+  dfs(1);
+
+  // dfs 方法
+  function dfs (index) {
+    // 边界：当且仅当组合内数字个数为 k 个时，才会对组合结果数组进行更新，且不再继续递归
+    if (subset.length === k) {
+      res.push(subset.slice())
+      return
     }
-    // 将元素索引入队
-    deque.push(i);
-    // 检查队头元素是否已经在滑动窗口之外
-    while (deque.length && deque[0] < i - k + 1) {
-      // 在窗口之外的元素要被去除
-      deque.shift();
-    }
-    // 检查滑动窗口状态，是否已经遍历了 k 个元素，如果是，则开始填入结果
-    if (i >= k - 1) {
-      res.push(nums[deque[0]])
+
+    // 递归式
+    // 1. 取所有剩余数字
+    for (let i = index; i <= n; i++) {
+      // 2. 对其中一个剩余数字进行二叉
+      // 取该数字填入，根据填入后的结果，继续处理（右子树）
+      subset.push(i);
+      dfs(i + 1);
+      // 不取该数字填入（左子树）
+      subset.pop();
     }
   }
 
-  // 返回结果数组
   return res;
-};
+}
