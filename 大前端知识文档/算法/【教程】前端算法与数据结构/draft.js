@@ -1,50 +1,87 @@
 /**
- * @param {character[][]} grid
- * @return {number}
+ * 二叉树结点的结构定义如下
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
  */
-// 入参是二维数组
-const numIslands = function (grid) {
-  const moveX = [0, 1, 0, -1];
-  const moveY = [1, 0, -1, 0];
-  // 处理二维数组的边界情况
-  if (!grid || grid.length === 0 || grid[0].length === 0) {
-    return 0;
-  }
-  // 初始化岛屿数量
-  let count = 0;
-  // 缓存二维数组的行数和列数
-  let row = grid.length,
-    column = grid[0].length;
-  // 以行和列为线索，尝试“逐个”遍历二位数组中的坑位
-  for (let i = 0; i < row; i++) {
-    for (let j = 0; j < column; j++) {
-      if (grid[i][j] === "1") {
-        // 每遇到1，就进入dfs，探索岛屿边界
-        dfs(grid, i, j);
-        // 每完成一个 dfs，就累加一个岛屿
-        count++;
-      }
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
+ */
+const lowestCommonAncestor = function (root, p, q) {
+  // 获取 p 的路径
+  const pathForP = getPath(root, p);
+  // 获取 q 的路径
+  const pathForQ = getPath(root, q);
+  // 找到两条路径中最后一个相同的元素
+  let i = 0;
+  while (i < Math.min(pathForP.length, pathForQ.length)) {
+    if (pathForP[i] === pathForQ[i]) {
+      i++;
+    } else {
+      break;
     }
   }
-  return count;
-
-  // 编写探索岛屿边界的逻辑
-  function dfs(grid, i, j) {
-    // 如果试图探索的范围已经越界，则return
-    if (
-      i < 0 ||
-      i >= grid.length ||
-      j < 0 ||
-      j >= grid[0].length ||
-      grid[i][j] === "0"
-    ) {
-      return;
-    }
-    // 遍历过的坑位都置0，防止反复遍历
-    grid[i][j] = "0";
-    // 遍历完当前的1，继续去寻找下一个1
-    for (let k = 0; k < 4; k++) {
-      dfs(grid, i + moveX[k], j + moveY[k]);
-    }
-  }
+  return pathForP[i - 1];
 };
+
+// 工具函数，找到二叉树中的某一结点并输出路径
+function getPath(root, target) {
+  let res = [];
+
+  // dfs 逻辑
+  function dfs(root) {
+    // root 为空，则说明当前子树上不存在
+    if (!root) {
+      return false;
+    }
+
+    // 将路径入栈
+    res.push(root.val);
+
+    if (root.val === target) {
+      // 找到目标，停止dfs
+      return true;
+    } else if (!dfs(root.left) && !dfs(root.right)) {
+      res.pop();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  dfs(root);
+
+  return res;
+}
+
+function TreeNode(val) {
+  this.val = val;
+  this.left = this.right = null;
+}
+
+const test3 = new TreeNode(3);
+const test5 = new TreeNode(5);
+const test1 = new TreeNode(1);
+test3.left = test5;
+test3.right = test1;
+
+const test6 = new TreeNode(6);
+const test2 = new TreeNode(2);
+const test0 = new TreeNode(0);
+const test8 = new TreeNode(8);
+test5.left = test6;
+test5.right = test2;
+test1.left = test0;
+test1.right = test8;
+
+const test4 = new TreeNode(4);
+const test7 = new TreeNode(7);
+test2.left = test4;
+test2.right = test7;
+
+const res = lowestCommonAncestor(test3, 7, 1);
+console.log(res);
