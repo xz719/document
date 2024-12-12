@@ -1,0 +1,41 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Embedding Gaode Maps</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1
+      style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.8);
+      "
+    >
+      My Favorite Place
+    </h1>
+    <iframe
+      src="https://www.amap.com/place/B0FFK8OQLY"
+      allowfullscreen
+      loading="lazy"
+    ></iframe>
+  </body>
+</html>
