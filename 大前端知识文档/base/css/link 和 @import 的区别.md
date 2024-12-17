@@ -6,6 +6,6 @@
 
 2. link 引⽤ CSS 时，会在⻚⾯载⼊时同时加载；而 `@import` 需要⻚⾯⽹⻚完全载⼊以后才加载；
 
-3. link是XHTML标签，⽆兼容问题；`@import` 是在 CSS2.1 提出的，低版本的浏览器不⽀持；
+3. link 是 XHTML 标签，⽆兼容问题；`@import` 是在 CSS2.1 提出的，低版本的浏览器不⽀持；
 
 4. link ⽀持使⽤ Javascript 控制 DOM 去改变样式；⽽ @import 不⽀持。
